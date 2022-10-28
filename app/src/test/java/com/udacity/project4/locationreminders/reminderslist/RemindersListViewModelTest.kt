@@ -77,7 +77,9 @@ class RemindersListViewModelTest {
 
             remindersListViewModel.loadReminders()
 
-            MatcherAssert.assertThat(remindersListViewModel.showSnackBar.value, CoreMatchers.`is`("Error in Testing!"))
+            MatcherAssert.assertThat(remindersListViewModel.showSnackBar.value, CoreMatchers.`is`(
+                error_Massage
+            ))
         }
     }
 
@@ -93,5 +95,9 @@ class RemindersListViewModelTest {
     private suspend fun saveReminder() {
         remindersRepository.saveReminder(
             ReminderDTO("title", "description", "location", 100.00, 10.00))
+    }
+
+    companion object {
+        const val error_Massage = "Error in Testing!"
     }
 }

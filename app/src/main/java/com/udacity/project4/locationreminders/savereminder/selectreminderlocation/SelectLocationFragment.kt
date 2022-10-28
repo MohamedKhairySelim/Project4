@@ -14,12 +14,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.R
 import com.udacity.project4.authentication.AuthenticationActivity.Companion.TAG
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
+import kotlinx.android.synthetic.main.fragment_select_location.*
 import org.koin.android.ext.android.inject
 import java.util.*
 
@@ -67,6 +69,7 @@ class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
 
     private fun setOnLongClick(map: GoogleMap) {
         map.setOnMapLongClickListener { LatLng->
+            map.clear()
             val snippet = String.format(Locale.getDefault(),"Lat:%1$.5f , Long:%2$.5f",LatLng.latitude,LatLng.longitude)
             map.addMarker(MarkerOptions().position(LatLng).title(getString(R.string.dropped_pin)).snippet(snippet).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
             selectedLocation = LatLng
@@ -84,7 +87,8 @@ class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
             }
             else->{
                 Log.i("Permission : ","Denied")
-                Toast.makeText(context,"Location permission was not granted.",Toast.LENGTH_LONG).show()
+                Snackbar.make(binding.root,"Location permission was not granted.",Snackbar.LENGTH_LONG).show()
+//                Toast.makeText(context,"Location permission was not granted.",Toast.LENGTH_LONG).show()
             }
         }
 
@@ -93,7 +97,8 @@ class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
     private fun enableMyLocation() {
         if (ifPermissionGranted()){
             map.isMyLocationEnabled = true
-            Toast.makeText(context,"Location permission is Granted.",Toast.LENGTH_LONG).show()
+            Snackbar.make(binding.root,"Location permission is Granted.",Snackbar.LENGTH_LONG).show()
+//            Toast.makeText(context,"Location permission is Granted.",Toast.LENGTH_LONG).show()
         }else{
             requestPermissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION))
         }

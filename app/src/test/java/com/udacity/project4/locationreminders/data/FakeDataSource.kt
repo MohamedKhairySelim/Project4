@@ -2,6 +2,7 @@ package com.udacity.project4.locationreminders.data
 
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.dto.Result
+import com.udacity.project4.locationreminders.reminderslist.RemindersListViewModelTest.Companion.error_Massage
 
 class FakeDataSource(var remindersServiceData: MutableList<ReminderDTO>? = mutableListOf()) : ReminderDataSource {
     private var shouldReturnError = false
@@ -11,7 +12,7 @@ class FakeDataSource(var remindersServiceData: MutableList<ReminderDTO>? = mutab
     }
     override suspend fun getReminders(): Result<List<ReminderDTO>> {
         if (shouldReturnError) {
-            return Result.Error("Returning testing error!")
+            return Result.Error(error_Massage)
         }
         if (remindersServiceData?.isEmpty()!!) {
             return Result.Success(remindersServiceData!!)
